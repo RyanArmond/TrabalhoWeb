@@ -8,18 +8,45 @@ import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
 
 export class UserSchema extends BaseModel {
-  static $columns = ['createdAt', 'email', 'fullName', 'id', 'password', 'updatedAt'] as const
+  static $columns = ['avatarUrl', 'bio', 'birthDate', 'createdAt', 'displayName', 'email', 'id', 'password', 'phoneNumber', 'updatedAt', 'username'] as const
   $columns = UserSchema.$columns
+  @column()
+  declare avatarUrl: string | null
+  @column()
+  declare bio: string | null
+  @column.date()
+  declare birthDate: DateTime
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
   @column()
-  declare email: string
+  declare displayName: string | null
   @column()
-  declare fullName: string | null
+  declare email: string | null
   @column({ isPrimary: true })
   declare id: number
   @column({ serializeAs: null })
   declare password: string
+  @column()
+  declare phoneNumber: string | null
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
+  @column()
+  declare username: string
+}
+
+export class VideoSchema extends BaseModel {
+  static $columns = ['createdAt', 'description', 'id', 'updatedAt', 'userId', 'videoUrl'] as const
+  $columns = VideoSchema.$columns
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare description: string | null
+  @column({ isPrimary: true })
+  declare id: number
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime | null
+  @column()
+  declare userId: number
+  @column()
+  declare videoUrl: string
 }
