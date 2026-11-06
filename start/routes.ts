@@ -13,6 +13,8 @@ import router from '@adonisjs/core/services/router'
 
 router.on('/').render('pages/home').as('home')
 
+router.get('listar_usuarios', controllers.)
+
 router
   .group(() => {
     router.get('signup', [controllers.NewAccount, 'create'])
