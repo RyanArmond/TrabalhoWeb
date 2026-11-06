@@ -7,4 +7,3 @@ export default class Video extends VideoSchema {
   @belongsTo(() => User)
   declare user: BelongsTo<typeof User>
 }
-

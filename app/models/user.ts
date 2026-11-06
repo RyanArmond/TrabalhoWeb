@@ -6,15 +6,13 @@ import { hasMany } from '@adonisjs/lucid/orm'
 import type { HasMany } from '@adonisjs/lucid/types/relations'
 import Video from '#models/video'
 
-
-
 export default class User extends compose(UserSchema, withAuthFinder(hash)) {
   @hasMany(() => Video)
   declare videos: HasMany<typeof Video>
 
-
   get initials() {
-    const [first, last] = this.fullName ? this.fullName.split(' ') : this.email.split('@')
+    const reference = this.displayName || this.username || this.email || this.phoneNumber || 'US'
+    const [first, last] = reference.split(' ')
     if (first && last) {
       return `${first.charAt(0)}${last.charAt(0)}`.toUpperCase()
     }

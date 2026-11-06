@@ -1,5 +1,3 @@
-
-
 import { middleware } from '#start/kernel'
 import { controllers } from '#generated/controllers'
 import router from '@adonisjs/core/services/router'
@@ -7,6 +5,8 @@ import router from '@adonisjs/core/services/router'
 const VideoController = () => import('#controllers/video_controller')
 
 router.on('/').render('pages/home').as('home')
+
+router.get('users', [controllers.Users, 'index'])
 
 router
   .group(() => {
@@ -25,10 +25,8 @@ router
   })
   .use(middleware.auth())
 
-
 router.get('/videos', [VideoController, 'index'])
 router.get('/videos/create', [VideoController, 'create'])
 router.post('/videos', [VideoController, 'store'])
 router.get('/videos/:id', [VideoController, 'show'])
 router.delete('/videos/:id', [VideoController, 'destroy'])
-
