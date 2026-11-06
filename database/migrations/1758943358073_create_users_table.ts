@@ -13,7 +13,7 @@ export default class extends BaseSchema {
 
       // Credenciais de contato
       table.string('email', 254).nullable().unique()
-      table.string('phone_number', 20).nullable().unique()
+      table.string('phone_number', 15).nullable().unique()
 
       table.string('password').notNullable()
 

@@ -1,6 +1,7 @@
 @layouts.auth()
   <h1 class="auth__title">Create your account</h1>
   <p class="auth__sub">Start building with the starter kit.</p>
+  
   @form({
     route: 'new_account.store',
     method: 'POST',
@@ -8,11 +9,13 @@
     'x-data': '{ submitting: false }',
     'x-on:submit': 'submitting = true',
   })
-    @field.root({ name: 'fullName' })
-      @!field.label({ text: 'Full name' })
-      @!input.control({ autocomplete: 'name', placeholder: 'Ada Lovelace' })
+
+    @field.root({ name: 'username' })
+      @!field.label({ text: 'Nome de Usuário' })
+      @!input.control({ autocomplete: 'username', placeholder: 'Seu nome de Usuário' })
       @!field.error()
     @end
+
     @field.root({ name: 'email' })
       @!field.label({ text: 'Email' })
       @!input.control({
@@ -22,6 +25,22 @@
       })
       @!field.error()
     @end
+
+    @field.root({ name: 'birthDate' })
+      @!field.label({ text: 'Data de Nascimento'})
+      @!input.control({ type: 'date' })
+     @!field.error()
+    @end
+
+    @field.root({ name: 'phoneNumber' })
+      @!field.label({ text: 'Celular' })
+      @!input.control({ 
+        type: 'tel',
+        placeholder: '(11) 99999-9999' 
+      })
+      @!field.error()
+    @end
+    
     @field.root({ name: 'password' })
       @!field.label({ text: 'Password' })
       @!input.control({
@@ -31,6 +50,7 @@
       })
       @!field.error()
     @end
+
     @field.root({ name: 'passwordConfirmation' })
       @!field.label({ text: 'Confirm password' })
       @!input.control({
@@ -40,6 +60,7 @@
       })
       @!field.error()
     @end
+
     @!button({
       text: 'Create account',
       type: 'submit',
