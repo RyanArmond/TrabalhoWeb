@@ -16,9 +16,4 @@ router
   })
   .use(middleware.guest())
 
-router
-  .group(() => {
-    router.on('/dashboard').render('pages/dashboard').as('dashboard')
-    router.post('logout', [controllers.Session, 'destroy'])
-  })
-  .use(middleware.auth())
+router.post('logout', [controllers.Session, 'destroy']).use(middleware.auth())
