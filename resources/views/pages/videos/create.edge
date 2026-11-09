@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Adicionar Vídeo</title>
+  <style>
+    body { font-family: sans-serif; max-width: 600px; margin: 40px auto; padding: 0 20px; line-height: 1.5; }
+    header { margin-bottom: 24px; }
+    .form-group { margin-bottom: 16px; }
+    label { display: block; font-weight: bold; margin-bottom: 6px; }
+    input[type="text"], textarea { width: 100%; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; }
+    button { background: #940a9cff; color: white; border: none; padding: 10px 16px; border-radius: 4px; cursor: pointer; font-size: 14px; }
+    button:hover { background: #940a9cff; }
+    .nav { margin-top: 20px; }
+    a { color: #940a9cff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Adicionar Vídeo</h1>
+    <p>Preencha os dados do vídeo / produto para cadastrar no sistema.</p>
+  </header>
+
+  <main>
+    <form action="/videos" method="POST" enctype="multipart/form-data">
+      {{ csrfField() }}
+
+      <div class="form-group">
+        <label for="title">Título do Vídeo / Produto:</label>
+        <input type="text" name="title" id="title" placeholder="Ex: Demonstração Smartwatch X" required>
+      </div>
+
+      <div class="form-group">
+        <label for="description">Descrição:</label>
+        <textarea name="description" id="description" rows="4" placeholder="Descreva o produto ou detalhes do vídeo..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="url">URL do Vídeo (Opcional):</label>
+        <input type="text" name="url" id="url" placeholder="Ex: https://youtube.com/shorts/... ou link">
+      </div>
+
+      <div class="form-group">
+        <label for="video_file">Arquivo de Vídeo (MP4, WebM):</label>
+        <input type="file" name="video_file" id="video_file" accept="video/mp4,video/webm">
+      </div>
+
+      <button type="submit">Enviar Vídeo</button>
+    </form>
+
+    <div class="nav">
+      <a href="/videos">← Voltar para lista de vídeos</a>
+    </div>
+  </main>
+</body>
+</html>
