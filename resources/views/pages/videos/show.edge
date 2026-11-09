@@ -1,60 +1,45 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <title>{{ video.title }} - Detalhes</title>
-  <style>
-    body { font-family: sans-serif; max-width: 700px; margin: 40px auto; padding: 0 20px; line-height: 1.6; }
-    header { border-bottom: 2px solid #eee; padding-bottom: 16px; margin-bottom: 24px; }
-    .meta { color: #666; font-size: 14px; margin-bottom: 20px; }
-    .video-box { background: #f4f4f4; border: 1px solid #ddd; border-radius: 8px; padding: 20px; margin-bottom: 24px; }
-    .url-tag { word-break: break-all; background: #e9ecef; padding: 6px 10px; border-radius: 4px; display: inline-block; font-size: 14px; }
-    .actions { display: flex; gap: 12px; margin-top: 24px; align-items: center; }
-    .btn { display: inline-block; background: #940a9cff; color: white; border: none; padding: 10px 16px; border-radius: 4px; text-decoration: none; cursor: pointer; font-size: 14px; }
-    .btn:hover { background: #940a9cff; }
-    .btn-danger { background: #e00; }
-    .btn-danger:hover { background: #b00; }
-    a { color: #940a9cff; text-decoration: none; }
-    a:hover { text-decoration: underline; }
-  </style>
-</head>
-<body>
-  <header>
-    <h1>{{ video.title }}</h1>
-    <div class="meta">
-      <span>Enviado por: <strong>{{ video.user ? (video.user.fullName || video.user.email) : 'Anônimo' }}</strong></span>
+@layouts.app({ title: video.title + ' - Detalhes' })
+  <div class="flex flex-col w-full max-w-3xl mx-auto p-12 gap-6">
+    <h1 class="text-3xl font-bold">{{ video.title }}</h1>
+    <div class="text-sm text-zinc-500">
+      <span>
+        Enviado por:
+        <strong>{{ video.user ? video.user.fullName || video.user.email : 'Anônimo' }}</strong>
+      </span>
       @if(video.createdAt)
-        <span> • Postado em: {{ video.createdAt.toFormat('dd/MM/yyyy HH:mm') }}</span>
+        <span>• Postado em: {{ video.createdAt.toFormat('dd/MM/yyyy HH:mm') }}</span>
       @end
     </div>
-  </header>
-
-  <main>
-    <div class="video-box">
-      <h3>Descrição do Produto / Vídeo:</h3>
+    <hr class="border border-zinc-300 dark:border-zinc-700" />
+    <div class="flex flex-col gap-4 bg-zinc-200 dark:bg-zinc-800 p-6 rounded-xl border border-zinc-300 dark:border-zinc-900">
+      <h3 class="font-bold text-lg">Descrição do Produto / Vídeo:</h3>
       <p>{{ video.description || 'Nenhuma descrição informada.' }}</p>
-
       @if(video.url)
-        <h4 style="margin-top: 20px;">Vídeo do Produto:</h4>
-        <div style="margin: 14px 0; text-align: center;">
-          <video controls width="100%" style="max-height: 480px; border-radius: 8px; background: #000;">
-            <source src="{{ video.url }}">
-            Seu navegador não suporta reprodução de vídeo.
+        <h4 class="font-bold text">Vídeo do Produto:</h4>
+        <div>
+          <video
+            controls
+            width="100%"
+            class="max-h-[480px] bg-black rounded-xl"
+          >
+            <source src="{{ video.url }}" />
+            <p>Seu navegador não suporta reprodução de vídeo.</p>
           </video>
         </div>
-        <p style="font-size: 13px; color: #777;">Arquivo: <span class="url-tag">{{ video.url }}</span></p>
       @end
     </div>
 
-    <div class="actions">
-      <a href="/videos" class="btn" style="background: #555;">← Voltar para Todos os Vídeos</a>
+    <div class="flex gap-3">
+      <a href="{{ route('videos.index') }}" class="btn-purple">← Voltar para Todos os Vídeos</a>
 
-      <form action="/videos/{{ video.id }}?_method=DELETE" method="POST" onsubmit="return confirm('Tem certeza que deseja apagar este vídeo?');">
+      <form
+        action="/videos/{{ video.id }}?_method=DELETE"
+        method="POST"
+        onsubmit="return confirm('Tem certeza que deseja apagar este vídeo?');"
+      >
         {{ csrfField() }}
-        <button type="submit" class="btn btn-danger">Excluir Vídeo</button>
+        <button type="submit" class="btn-purple bg-red-600">Excluir Vídeo</button>
       </form>
     </div>
-  </main>
-</body>
-</html>
-
+  </div>
+@end

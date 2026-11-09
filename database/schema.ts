@@ -8,7 +8,19 @@ import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
 
 export class UserSchema extends BaseModel {
-  static $columns = ['avatarUrl', 'bio', 'birthDate', 'createdAt', 'displayName', 'email', 'id', 'password', 'phoneNumber', 'updatedAt', 'username'] as const
+  static $columns = [
+    'avatarUrl',
+    'bio',
+    'birthDate',
+    'createdAt',
+    'displayName',
+    'email',
+    'id',
+    'password',
+    'phoneNumber',
+    'updatedAt',
+    'username',
+  ] as const
   $columns = UserSchema.$columns
   @column()
   declare avatarUrl: string | null
@@ -35,7 +47,15 @@ export class UserSchema extends BaseModel {
 }
 
 export class VideoSchema extends BaseModel {
-  static $columns = ['createdAt', 'description', 'id', 'title', 'updatedAt', 'url', 'userId'] as const
+  static $columns = [
+    'createdAt',
+    'description',
+    'id',
+    'title',
+    'updatedAt',
+    'url',
+    'userId',
+  ] as const
   $columns = VideoSchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

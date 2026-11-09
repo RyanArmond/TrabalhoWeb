@@ -1,6 +1,5 @@
 import { defineConfig, drivers } from '@adonisjs/core/hash'
 
-
 /**
  * Hashing configuration.
  *

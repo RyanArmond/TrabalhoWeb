@@ -1,9 +1,8 @@
 @let(pageTitle = $props.get('title'))
 @let(iconSize = 30)
-
 <!DOCTYPE html>
 <html
-  lang="en-us"
+  lang="pt-BR"
   data-theme="{{
     request.plainCookie('app_theme', {
       defaultValue: 'light',
@@ -18,7 +17,10 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @stack('dumper')
   </head>
-    <body x-data="{ sidebarOpen: true }" class="min-h-screen flex flex-col bg-paper">
+  <body
+    x-data="{ sidebarOpen: true }"
+    class="min-h-screen flex flex-col bg-paper text-zinc-800 dark:text-zinc-200"
+  >
     <header class="header header--bar shrink-0">
       <div class="header__inner">
         <button
@@ -39,40 +41,51 @@
         </div>
       </div>
     </header>
-    
+
     <div class="flex flex-1 relative">
-      
-      <!-- Barra Lateral -->
-      <aside 
+      <!--Barra Lateral-->
+      <aside
         class="shrink-0 transition-[width] duration-300 bg-white dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-800 p-2 sticky top-0 h-[calc(100vh-60px)] overflow-y-auto"
         :class="sidebarOpen ? 'w-60' : 'w-[3.9375rem]'"
       >
         <nav class="flex flex-col gap-2">
-          <a href="{{ route('home') }}" 
-            class="flex items-center gap-3 p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-800 hover:text-purple-700 dark:text-zinc-200 dark:hover:text-purple-500" 
+          <a
+            href="{{ route('home') }}"
+            class="flex items-center gap-3 p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-purple-700 dark:hover:text-purple-500"
           >
-            @svg('lucide:house', { width: iconSize, height: iconSize, class: 'shrink-0' })
+            @svg('lucide:house', {
+              width: iconSize,
+              height: iconSize,
+              class: 'shrink-0',
+            })
             <span x-show="sidebarOpen" class="truncate font-bold">Início</span>
           </a>
-          <a href="{{ route('users.index') }}" 
-            class="flex items-center gap-3 p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-800 hover:text-purple-700 dark:text-zinc-200 dark:hover:text-purple-500"
+          <a
+            href="{{ route('users.index') }}"
+            class="flex items-center gap-3 p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-purple-700 dark:hover:text-purple-500"
           >
-            @svg('lucide:users', { width: iconSize, height: iconSize, class: 'shrink-0' })
+            @svg('lucide:users', {
+              width: iconSize,
+              height: iconSize,
+              class: 'shrink-0',
+            })
             <span x-show="sidebarOpen" class="truncate font-bold">Usuários</span>
           </a>
-          <a href="/videos" 
-            class="flex items-center gap-3 p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-800 hover:text-purple-700 dark:text-zinc-200 dark:hover:text-purple-500"
+          <a
+            href="/videos"
+            class="flex items-center gap-3 p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-purple-700 dark:hover:text-purple-500"
           >
-            @svg('lucide:video', { width: iconSize, height: iconSize, class: 'shrink-0' })
+            @svg('lucide:video', {
+              width: iconSize,
+              height: iconSize,
+              class: 'shrink-0',
+            })
             <span x-show="sidebarOpen" class="truncate font-bold">Vídeos</span>
           </a>
         </nav>
       </aside>
-
-      <!-- Conteúdo Principal da Página -->
-      <main class="flex-1 min-w-0 bg-paper">
-        {{{ await $slots.main() }}}
-      </main>
+      <!--Conteúdo Principal da Página-->
+      <main class="flex-1 min-w-0 bg-paper">{{{ await $slots.main() }}}</main>
     </div>
     @include('partials/flash_alerts')
   </body>

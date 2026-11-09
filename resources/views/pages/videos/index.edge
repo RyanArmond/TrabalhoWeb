@@ -1,100 +1,92 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <title>Vídeos - TikTok & Shopee</title>
-  <style>
-    body { font-family: sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; line-height: 1.5; }
-    header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 16px; margin-bottom: 24px; }
-    .btn { display: inline-block; background: #940a9cff; color: white; border: none; padding: 8px 14px; border-radius: 4px; text-decoration: none; cursor: pointer; font-size: 14px; }
-    .btn:hover { background: #940a9cff; }
-    .btn-danger { background: #e00; }
-    .btn-danger:hover { background: #b00; }
-    .search-box { display: flex; gap: 8px; margin-bottom: 24px; }
-    .search-box input { flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
-    .video-card { border: 1px solid #ddd; border-radius: 6px; padding: 16px; margin-bottom: 16px; background: #fafafa; }
-    .video-title { margin-top: 0; margin-bottom: 8px; }
-    .video-meta { font-size: 13px; color: #666; margin-bottom: 12px; }
-    .video-actions { display: flex; gap: 10px; align-items: center; }
-    a { color: #940a9cff; text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    .empty-state { text-align: center; padding: 40px; background: #f9f9f9; border-radius: 6px; color: #666; }
-  </style>
-</head>
-<body>
-  <header>
-    <div>
-      <h1>Vídeos de Produtos</h1>
-      <p style="margin: 0; color: #666;">Catálogo de vídeos curtos</p>
+@layouts.app({ title: 'Vídeos - TikTok & Shopee' })
+  <div class="flex flex-col w-full max-w-4xl mx-auto p-12 gap-6">
+    <div class="flex justify-between">
+      <div class="flex flex-col gap-6">
+        <h1 class="text-3xl font-extrabold">Vídeos de Produtos</h1>
+        <p class="text-zinc-500 dark:text-zinc-700">Catálogo de vídeos curtos</p>
+      </div>
+      <a href="{{ route('videos.create') }}" class="btn-purple">+ Enviar Vídeo</a>
     </div>
-    <a href="/videos/create" class="btn">+ Enviar Vídeo</a>
-  </header>
-
-  <main>
-    <!-- Busca de Vídeos -->
-    <form action="/videos" method="GET" class="search-box">
-      <input 
-        type="text" 
-        name="search" 
-        placeholder="Buscar vídeo por título..." 
-        value="{{ search || '' }}"
-      >
-      <button type="submit" class="btn">Buscar</button>
-      @if(search)
-        <a href="/videos" class="btn" style="background: #666;">Limpar</a>
-      @end
+    <hr class="border border-zinc-300 dark:border-zinc-700" />
+    <!--Busca de Vídeos-->
+    <form action="{{ route('videos.index') }}" method="GET" class="flex gap-2">
+      <div class="flex justify-between border border-zinc-400 rounded-sm flex-1">
+        <input
+          type="text"
+          name="search"
+          placeholder="Buscar vídeo por título..."
+          value="{{ search || '' }}"
+          class="w-full p-1 pl-2"
+        />
+        @if(search)
+          <a
+            href="{{ route('videos.index') }}"
+            class="flex items-center h-7 p-1 my-auto text-zinc-500 dark:text-zinc-400"
+          >
+            @svg('lucide:x', { width: 20, height: 20 })
+          </a>
+        @end
+      </div>
+      <button type="submit" class="btn-purple">Buscar</button>
     </form>
-
-    <!-- Lista de Vídeos -->
+    <!--Lista de Vídeos-->
     @if(videos.length > 0)
       @each(video in videos)
-        <div class="video-card">
-          <h2 class="video-title">
-            <a href="/videos/{{ video.id }}">{{ video.title }}</a>
+        <div class="flex flex-col bg-zinc-300 dark:bg-zinc-900 p-4 rounded-lg gap-1">
+          <h2 class="text-zinc-900 dark:text-zinc-100 text-2xl font-extrabold">
+            <a href="{{ route('videos.show', { id: video.id }) }}">{{ video.title }}</a>
           </h2>
 
-          <div class="video-meta">
-            <span>Enviado por: <strong>{{ video.user ? (video.user.fullName || video.user.email) : 'Anônimo' }}</strong></span>
+          <div class="text-sm text-zinc-700 dark:text-zinc-400">
+            <span>
+              Enviado por:
+              <strong>{{ video.user.displayName || video.user.username }}</strong>
+            </span>
             @if(video.createdAt)
-              <span> • Postado em: {{ video.createdAt.toFormat('dd/MM/yyyy HH:mm') }}</span>
+              <span>• Postado em: {{ video.createdAt.toFormat('dd/MM/yyyy HH:mm') }}</span>
             @end
           </div>
-
           @if(video.description)
             <p>{{ video.description }}</p>
           @end
-
           @if(video.url)
-            <div style="margin: 12px 0;">
-              <video controls width="100%" style="max-height: 320px; border-radius: 6px; background: #000;">
-                <source src="{{ video.url }}">
-                Seu navegador não suporta reprodução de vídeo.
+            <div>
+              <video controls width="100%" class="max-h-96 rounded-lg bg-black">
+                <source src="{{ video.url }}" />
+
+                <p>Seu navegador não suporta reprodução de vídeo.</p>
               </video>
             </div>
           @end
 
-          <div class="video-actions">
-            <a href="/videos/{{ video.id }}" class="btn">Detalhar Vídeo</a>
+          <div class="flex gap-3 p-3">
+            <a href="{{ route('videos.show', { id: video.id }) }}" class="btn-purple">
+              Detalhar Vídeo
+            </a>
 
-            <form action="/videos/{{ video.id }}?_method=DELETE" method="POST" onsubmit="return confirm('Deseja realmente remover este vídeo?');">
+            <form
+              action="{{ route('videos.show', { id: video.id }) }}?_method=DELETE"
+              method="POST"
+              onsubmit="return confirm('Deseja realmente remover este vídeo?');"
+            >
               {{ csrfField() }}
-              <button type="submit" class="btn btn-danger">Remover</button>
+              <button type="submit" class="btn-purple bg-red-600">Remover</button>
             </form>
           </div>
         </div>
       @end
     @else
-      <div class="empty-state">
+      <div
+        class="text-lg flex flex-col items-center bg-neutral-200 dark:bg-neutral-800 text-zinc-700 dark:text-zinc-300 rounded-sm gap-6 p-12"
+      >
         @if(search)
           <p>Nenhum vídeo encontrado para o termo <strong>"{{ search }}"</strong>.</p>
-          <a href="/videos">Ver todos os vídeos</a>
+          <a href="{{ route('videos.index') }}" class="btn-purple">Ver todos os vídeos</a>
         @else
           <p>Nenhum vídeo cadastrado no momento.</p>
-          <a href="/videos/create" class="btn" style="margin-top: 10px;">Cadastrar o primeiro vídeo</a>
+          <a href="{{ route('videos.create') }}" class="btn-purple">Cadastrar o primeiro vídeo</a>
         @end
       </div>
     @end
-  </main>
-</body>
-</html>
-
+  </div>
+@end
