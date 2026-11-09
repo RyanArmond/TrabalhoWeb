@@ -5,7 +5,7 @@ import User from "#models/user";
 export default class UsersController {
     async index({ view }: HttpContext) {
         const users = await User.all()
-        return view.render('pages/listUsers', { users })
+        return view.render('pages/users/index', { users })
     }
 
 }
