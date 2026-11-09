@@ -1,0 +1,69 @@
+@layouts.app({ title: 'Adicionar Vídeo' })
+  <div class="flex flex-col w-full max-w-3xl mx-auto p-12 gap-6">
+    <h1 class="text-3xl font-extrabold text-black dark:text-zinc-200">Adicionar Vídeo</h1>
+    <p>Preencha os dados do vídeo / produto para cadastrar no sistema.</p>
+
+    <form
+      action="{{ route('videos.index') }}"
+      method="POST"
+      enctype="multipart/form-data"
+      class="flex flex-col gap-8"
+    >
+      {{ csrfField() }}
+      <div class="flex flex-col gap-2">
+        <label for="title" class="form-label">Título do Vídeo / Produto:</label>
+        <input
+          type="text"
+          name="title"
+          id="title"
+          placeholder="Ex: Demonstração Smartwatch X"
+          required
+          class="textbox"
+        />
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label for="description" class="form-label">Descrição:</label>
+        <textarea
+          name="description"
+          id="description"
+          rows="4"
+          placeholder="Descreva o produto ou detalhes do vídeo..."
+          class="textbox"
+        ></textarea>
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label for="url" class="form-label">URL do Vídeo (Opcional):</label>
+        <input
+          type="text"
+          name="url"
+          id="url"
+          placeholder="Ex: https://youtube.com/shorts/... ou link"
+          class="textbox"
+        />
+      </div>
+
+      <div class="flex flex-col gap-2">
+        <label for="video_file" class="form-label">Arquivo de Vídeo (MP4, WebM):</label>
+        <input
+          type="file"
+          name="video_file"
+          id="video_file"
+          accept="video/mp4,video/webm"
+          class="text-sm text-zinc-500 dark:text-zinc-400
+            file:mr-4 file:py-2.5 file:px-4
+            file:rounded-lg
+            file:font-semibold
+            file:bg-purple-100 dark:file:bg-purple-700
+            file:text-purple-700 dark:file:text-purple-300
+            hover:file:bg-purple-200 dark:hover:file:bg-purple-600
+            cursor-pointer file:cursor-pointer
+            border border-zinc-200 dark:border-zinc-700 rounded-lg p-2 bg-white dark:bg-zinc-900"
+        />
+      </div>
+
+      <button type="submit" class="btn-purple self-start">Enviar Vídeo</button>
+    </form>
+  </div>
+@end

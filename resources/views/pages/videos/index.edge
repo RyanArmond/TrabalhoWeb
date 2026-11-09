@@ -1,0 +1,92 @@
+@layouts.app({ title: 'Vídeos - TikTok & Shopee' })
+  <div class="flex flex-col w-full max-w-4xl mx-auto p-12 gap-6">
+    <div class="flex justify-between">
+      <div class="flex flex-col gap-6">
+        <h1 class="text-3xl font-extrabold">Vídeos de Produtos</h1>
+        <p class="text-zinc-500 dark:text-zinc-700">Catálogo de vídeos curtos</p>
+      </div>
+      <a href="{{ route('videos.create') }}" class="btn-purple">+ Enviar Vídeo</a>
+    </div>
+    <hr class="border border-zinc-300 dark:border-zinc-700" />
+    <!--Busca de Vídeos-->
+    <form action="{{ route('videos.index') }}" method="GET" class="flex gap-2">
+      <div class="flex justify-between border border-zinc-400 rounded-sm flex-1">
+        <input
+          type="text"
+          name="search"
+          placeholder="Buscar vídeo por título..."
+          value="{{ search || '' }}"
+          class="w-full p-1 pl-2"
+        />
+        @if(search)
+          <a
+            href="{{ route('videos.index') }}"
+            class="flex items-center h-7 p-1 my-auto text-zinc-500 dark:text-zinc-400"
+          >
+            @svg('lucide:x', { width: 20, height: 20 })
+          </a>
+        @end
+      </div>
+      <button type="submit" class="btn-purple">Buscar</button>
+    </form>
+    <!--Lista de Vídeos-->
+    @if(videos.length > 0)
+      @each(video in videos)
+        <div class="flex flex-col bg-zinc-300 dark:bg-zinc-900 p-4 rounded-lg gap-1">
+          <h2 class="text-zinc-900 dark:text-zinc-100 text-2xl font-extrabold">
+            <a href="{{ route('videos.show', { id: video.id }) }}">{{ video.title }}</a>
+          </h2>
+
+          <div class="text-sm text-zinc-700 dark:text-zinc-400">
+            <span>
+              Enviado por:
+              <strong>{{ video.user.displayName || video.user.username }}</strong>
+            </span>
+            @if(video.createdAt)
+              <span>• Postado em: {{ video.createdAt.toFormat('dd/MM/yyyy HH:mm') }}</span>
+            @end
+          </div>
+          @if(video.description)
+            <p>{{ video.description }}</p>
+          @end
+          @if(video.url)
+            <div>
+              <video controls width="100%" class="max-h-96 rounded-lg bg-black">
+                <source src="{{ video.url }}" />
+
+                <p>Seu navegador não suporta reprodução de vídeo.</p>
+              </video>
+            </div>
+          @end
+
+          <div class="flex gap-3 p-3">
+            <a href="{{ route('videos.show', { id: video.id }) }}" class="btn-purple">
+              Detalhar Vídeo
+            </a>
+
+            <form
+              action="{{ route('videos.show', { id: video.id }) }}?_method=DELETE"
+              method="POST"
+              onsubmit="return confirm('Deseja realmente remover este vídeo?');"
+            >
+              {{ csrfField() }}
+              <button type="submit" class="btn-purple bg-red-600">Remover</button>
+            </form>
+          </div>
+        </div>
+      @end
+    @else
+      <div
+        class="text-lg flex flex-col items-center bg-neutral-200 dark:bg-neutral-800 text-zinc-700 dark:text-zinc-300 rounded-sm gap-6 p-12"
+      >
+        @if(search)
+          <p>Nenhum vídeo encontrado para o termo <strong>"{{ search }}"</strong>.</p>
+          <a href="{{ route('videos.index') }}" class="btn-purple">Ver todos os vídeos</a>
+        @else
+          <p>Nenhum vídeo cadastrado no momento.</p>
+          <a href="{{ route('videos.create') }}" class="btn-purple">Cadastrar o primeiro vídeo</a>
+        @end
+      </div>
+    @end
+  </div>
+@end

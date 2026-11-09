@@ -1,0 +1,25 @@
+@layouts.app({ title: 'Lista de Usuários' })
+  <div class="flex flex-col w-full max-w-3xl mx-auto p-8 gap-6">
+    <h1 class="text-4xl font-extrabold text-purple-700 dark:text-purple-500">
+      Lista dos Usuários:
+    </h1>
+
+    <div class="flex flex-col gap-2">
+      @each(user in users)
+        <div
+          class="p-3 bg-white dark:bg-zinc-800 rounded-lg shadow-sm border border-zinc-200 dark:border-zinc-700 text-zinc-900 hover:text-purple-700 dark:text-zinc-100 dark:hover:text-purple-500 transition-transform duration-300 hover:scale-105 hover:shadow-lg"
+        >
+          <a href="{{ route('users.index') }}" class="flex items-center gap-2">
+            @if(user.avatar_url)
+              <img src="{{ user.avatar_url }}" alt="User Profile Pic" width="30" height="30" />
+            @else
+              @svg('lucide:circle-user', { width: 30, height: 30 })
+            @end
+
+            <p class="font-semibold text-xl">{{ user.username }}</p>
+          </a>
+        </div>
+      @end
+    </div>
+  </div>
+@end

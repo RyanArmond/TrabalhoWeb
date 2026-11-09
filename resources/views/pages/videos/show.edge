@@ -1,0 +1,45 @@
+@layouts.app({ title: video.title + ' - Detalhes' })
+  <div class="flex flex-col w-full max-w-3xl mx-auto p-12 gap-6">
+    <h1 class="text-3xl font-bold">{{ video.title }}</h1>
+    <div class="text-sm text-zinc-500">
+      <span>
+        Enviado por:
+        <strong>{{ video.user ? video.user.fullName || video.user.email : 'Anônimo' }}</strong>
+      </span>
+      @if(video.createdAt)
+        <span>• Postado em: {{ video.createdAt.toFormat('dd/MM/yyyy HH:mm') }}</span>
+      @end
+    </div>
+    <hr class="border border-zinc-300 dark:border-zinc-700" />
+    <div class="flex flex-col gap-4 bg-zinc-200 dark:bg-zinc-800 p-6 rounded-xl border border-zinc-300 dark:border-zinc-900">
+      <h3 class="font-bold text-lg">Descrição do Produto / Vídeo:</h3>
+      <p>{{ video.description || 'Nenhuma descrição informada.' }}</p>
+      @if(video.url)
+        <h4 class="font-bold text">Vídeo do Produto:</h4>
+        <div>
+          <video
+            controls
+            width="100%"
+            class="max-h-[480px] bg-black rounded-xl"
+          >
+            <source src="{{ video.url }}" />
+            <p>Seu navegador não suporta reprodução de vídeo.</p>
+          </video>
+        </div>
+      @end
+    </div>
+
+    <div class="flex gap-3">
+      <a href="{{ route('videos.index') }}" class="btn-purple">← Voltar para Todos os Vídeos</a>
+
+      <form
+        action="/videos/{{ video.id }}?_method=DELETE"
+        method="POST"
+        onsubmit="return confirm('Tem certeza que deseja apagar este vídeo?');"
+      >
+        {{ csrfField() }}
+        <button type="submit" class="btn-purple bg-red-600">Excluir Vídeo</button>
+      </form>
+    </div>
+  </div>
+@end

@@ -8,7 +8,19 @@ import { BaseModel, column } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
 
 export class UserSchema extends BaseModel {
-  static $columns = ['avatarUrl', 'bio', 'birthDate', 'createdAt', 'displayName', 'email', 'id', 'password', 'phoneNumber', 'updatedAt', 'username'] as const
+  static $columns = [
+    'avatarUrl',
+    'bio',
+    'birthDate',
+    'createdAt',
+    'displayName',
+    'email',
+    'id',
+    'password',
+    'phoneNumber',
+    'updatedAt',
+    'username',
+  ] as const
   $columns = UserSchema.$columns
   @column()
   declare avatarUrl: string | null
@@ -35,7 +47,15 @@ export class UserSchema extends BaseModel {
 }
 
 export class VideoSchema extends BaseModel {
-  static $columns = ['createdAt', 'description', 'id', 'updatedAt', 'userId', 'videoUrl'] as const
+  static $columns = [
+    'createdAt',
+    'description',
+    'id',
+    'title',
+    'updatedAt',
+    'url',
+    'userId',
+  ] as const
   $columns = VideoSchema.$columns
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
@@ -43,10 +63,12 @@ export class VideoSchema extends BaseModel {
   declare description: string | null
   @column({ isPrimary: true })
   declare id: number
+  @column()
+  declare title: string
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime | null
   @column()
-  declare userId: number
+  declare url: string | null
   @column()
-  declare videoUrl: string
+  declare userId: number | null
 }
