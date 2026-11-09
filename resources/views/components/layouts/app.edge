@@ -1,4 +1,6 @@
 @let(pageTitle = $props.get('title'))
+@let(iconSize = 30)
+
 <!DOCTYPE html>
 <html
   lang="en-us"
@@ -29,9 +31,9 @@
         <div class="header__right">
           @!themeToggle()
           @form({ route: 'session.destroy', method: 'POST' })
-            <button type="submit" class="btn btn--secondary btn--sm">
+            <button type="submit" class="btn btn--secondary btn--sm hover:text-red-600">
               @svg('lucide:log-out', { width: 15, height: 15 })
-              Log out
+              <span>Log out</span>
             </button>
           @end
         </div>
@@ -42,18 +44,20 @@
       
       <!-- Barra Lateral -->
       <aside 
-        class="shrink-0 transition-[width] duration-300 bg-white dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-800 p-4 sticky top-0 h-[calc(100vh-60px)] overflow-y-auto"
-        :class="sidebarOpen ? 'w-60' : 'w-22'"
+        class="shrink-0 transition-[width] duration-300 bg-white dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-800 p-2 sticky top-0 h-[calc(100vh-60px)] overflow-y-auto"
+        :class="sidebarOpen ? 'w-60' : 'w-[3.9375rem]'"
       >
-        <nav class="flex flex-col gap-2 justify-content">
-          <a href="/" 
+        <nav class="flex flex-col gap-2">
+          <a href="{{ route('home') }}" 
             class="flex items-center gap-3 p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-800 hover:text-purple-700 dark:text-zinc-200 dark:hover:text-purple-500" 
           >
-            @svg('lucide:house', { width: 35, height: 35, class: 'shrink-0' })
+            @svg('lucide:house', { width: iconSize, height: iconSize, class: 'shrink-0' })
             <span x-show="sidebarOpen" class="truncate font-bold">Início</span>
           </a>
-          <a href="/users" class="flex items-center gap-3 p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-800 hover:text-purple-700 dark:text-zinc-200 dark:hover:text-purple-500">
-            @svg('lucide:users', { width: 35, height: 35, class: 'shrink-0' })
+          <a href="{{ route('users.index') }}" 
+            class="flex items-center gap-3 p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-800 hover:text-purple-700 dark:text-zinc-200 dark:hover:text-purple-500"
+          >
+            @svg('lucide:users', { width: iconSize, height: iconSize, class: 'shrink-0' })
             <span x-show="sidebarOpen" class="truncate font-bold">Usuários</span>
           </a>
         </nav>
