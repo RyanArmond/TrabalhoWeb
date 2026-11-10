@@ -11,17 +11,15 @@
       @end
     </div>
     <hr class="border border-zinc-300 dark:border-zinc-700" />
-    <div class="flex flex-col gap-4 bg-zinc-200 dark:bg-zinc-800 p-6 rounded-xl border border-zinc-300 dark:border-zinc-900">
+    <div
+      class="flex flex-col gap-4 bg-zinc-200 dark:bg-zinc-800 p-6 rounded-xl border border-zinc-300 dark:border-zinc-900"
+    >
       <h3 class="font-bold text-lg">Descrição do Produto / Vídeo:</h3>
       <p>{{ video.description || 'Nenhuma descrição informada.' }}</p>
       @if(video.url)
         <h4 class="font-bold text">Vídeo do Produto:</h4>
         <div>
-          <video
-            controls
-            width="100%"
-            class="max-h-[480px] bg-black rounded-xl"
-          >
+          <video controls width="100%" class="max-h-[480px] bg-black rounded-xl">
             <source src="{{ video.url }}" />
             <p>Seu navegador não suporta reprodução de vídeo.</p>
           </video>

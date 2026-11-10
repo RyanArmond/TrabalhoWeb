@@ -39,8 +39,12 @@
 
           <div class="text-sm text-zinc-700 dark:text-zinc-400">
             <span>
-              Enviado por:
-              <strong>{{ video.user.displayName || video.user.username }}</strong>
+              <p>Enviado por:</p>
+              @if(video.user)
+                <strong>{{ video.user.displayName || video.user.username }}</strong>
+              @else
+                <strong>Usuário Desconhecido</strong>
+              @end
             </span>
             @if(video.createdAt)
               <span>• Postado em: {{ video.createdAt.toFormat('dd/MM/yyyy HH:mm') }}</span>
@@ -53,7 +57,6 @@
             <div>
               <video controls width="100%" class="max-h-96 rounded-lg bg-black">
                 <source src="{{ video.url }}" />
-
                 <p>Seu navegador não suporta reprodução de vídeo.</p>
               </video>
             </div>
