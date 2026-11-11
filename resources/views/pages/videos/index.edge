@@ -8,30 +8,10 @@
       <a href="{{ route('videos.create') }}" class="btn-purple">+ Enviar Vídeo</a>
     </div>
     <hr class="border border-zinc-300 dark:border-zinc-700" />
-    <!--Busca de Vídeos-->
-    <form action="{{ route('videos.index') }}" method="GET" class="flex gap-2">
-      <div class="flex justify-between border border-zinc-400 rounded-sm flex-1">
-        <input
-          type="text"
-          name="search"
-          placeholder="Buscar vídeo por título..."
-          value="{{ search || '' }}"
-          class="w-full p-1 pl-2"
-        />
-        @if(search)
-          <a
-            href="{{ route('videos.index') }}"
-            class="flex items-center h-7 p-1 my-auto text-zinc-500 dark:text-zinc-400"
-          >
-            @svg('lucide:x', { width: 20, height: 20 })
-          </a>
-        @end
-      </div>
-      <button type="submit" class="btn-purple">Buscar</button>
-    </form>
     <!--Lista de Vídeos-->
     @if(videos.length > 0)
       @each(video in videos)
+        {{-- Card do Vídeo --}}
         <div class="flex flex-col bg-zinc-300 dark:bg-zinc-900 p-4 rounded-lg gap-1">
           <h2 class="text-zinc-900 dark:text-zinc-100 text-2xl font-extrabold">
             <a href="{{ route('videos.show', { id: video.id }) }}">{{ video.title }}</a>
@@ -61,24 +41,28 @@
               </video>
             </div>
           @end
-
+          {{-- Ações Possíveis --}}
           <div class="flex gap-3 p-3">
+            {{-- Botão Detalhar --}}
             <a href="{{ route('videos.show', { id: video.id }) }}" class="btn-purple">
               Detalhar Vídeo
             </a>
-
-            <form
+            {{-- Botão Remover --}}
+            {{--
+              <form
               action="{{ route('videos.show', { id: video.id }) }}?_method=DELETE"
               method="POST"
               onsubmit="return confirm('Deseja realmente remover este vídeo?');"
-            >
+              >
               {{ csrfField() }}
               <button type="submit" class="btn-purple bg-red-600">Remover</button>
-            </form>
+              </form>
+            --}}
           </div>
         </div>
       @end
     @else
+      {{-- Sem vídeos --}}
       <div
         class="text-lg flex flex-col items-center bg-neutral-200 dark:bg-neutral-800 text-zinc-700 dark:text-zinc-300 rounded-sm gap-6 p-12"
       >

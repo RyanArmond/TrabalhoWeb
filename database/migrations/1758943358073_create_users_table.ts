@@ -17,6 +17,9 @@ export default class extends BaseSchema {
 
       table.string('password').notNullable()
 
+      // Business Object
+      table.string('role').notNullable().defaultTo('user')
+
       // Perfil social
       table.string('avatar_url').nullable()
       table.string('bio', 160).nullable()
