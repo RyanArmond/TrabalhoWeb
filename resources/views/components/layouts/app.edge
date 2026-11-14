@@ -19,73 +19,138 @@
   </head>
   <body
     x-data="{ sidebarOpen: true }"
-    class="min-h-screen flex flex-col bg-paper text-zinc-800 dark:text-zinc-200"
+    class="h-screen flex flex-col bg-paper text-zinc-800 dark:text-zinc-200 p-5 gap-4 overflow-hidden"
   >
-    <header class="header header--bar shrink-0">
-      <div class="header__inner">
-        <button
-          type="button"
-          @click="sidebarOpen = !sidebarOpen"
-          class="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-purple-700 dark:hover:text-purple-500 cursor-pointer "
-        >
-          @svg('lucide:menu', { width: 20, height: 20 })
-        </button>
-        <div class="header__right">
-          @!themeToggle()
+    <header
+      class="flex justify-between items-center bg-white dark:bg-zinc-900 border-b border-[var(--line)] h-[60px] shrink-0 px-6 gap-4 rounded-lg"
+    >
+      {{-- Logo --}}
+      <a href="{{ route('home') }}" class="flex items-center shrink-0">
+        @svg('lucide:handbag', { width: 40, height: 40 })
+        <span class="font-bold text-[26px]">EM BREVE</span>
+      </a>
+      {{-- Barra de Pesquisa --}}
+      <form
+        action="{{ route('videos.index') }}"
+        method="GET"
+        class="flex justify-between border border-zinc-400 rounded-full flex-1 max-w-xl mx-auto shadow-md"
+      >
+        <input
+          type="text"
+          name="search"
+          placeholder="Search"
+          value="{{ request.input('search', '') }}"
+          class="w-full p-1 pl-2 outline-none"
+        />
+
+        <div class="flex items-center p-2 mr-2 gap-4">
+          @if(request.input('search'))
+            <a href="{{ route('videos.index') }}" class="my-auto text-zinc-500 dark:text-zinc-400">
+              @svg('lucide:x', { width: 20, height: 20 })
+            </a>
+          @end
+          {{-- Linha Vertical Separadora --}}
+          <div class="h-[20px] border-l border-zinc-400 mr-1"></div>
+
+          <button type="submit" class="my-auto text-zinc-500 dark:text-zinc-400">
+            @svg('lucide:search', { width: 20, height: 20 })
+          </button>
+        </div>
+      </form>
+      {{-- Direita do Cabeçalho --}}
+      <div class="flex gap-2 shrink-0">
+        @!themeToggle()
+        @if(auth.isAuthenticated)
           @form({ route: 'session.destroy', method: 'POST' })
             <button type="submit" class="btn btn--secondary btn--sm hover:text-red-600">
               @svg('lucide:log-out', { width: 15, height: 15 })
               <span>Log out</span>
             </button>
           @end
-        </div>
+        @else
+          <a href="{{ route('session.create') }}" class="btn btn--secondary btn--sm">Entrar</a>
+        @end
       </div>
     </header>
 
-    <div class="flex flex-1 relative">
+    <div class="flex flex-1 relative min-h-0 gap-6">
       <!--Barra Lateral-->
       <aside
-        class="shrink-0 transition-[width] duration-300 bg-white dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-800 p-2 sticky top-0 h-[calc(100vh-60px)] overflow-y-auto"
+        class="flex flex-col justify-between shrink-0 h-full overflow-y-auto transition-[width] duration-300 bg-white dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-800 p-2 sticky top-0 rounded-lg"
         :class="sidebarOpen ? 'w-60' : 'w-[3.9375rem]'"
       >
-        <nav class="flex flex-col gap-2">
-          <a
-            href="{{ route('home') }}"
-            class="flex items-center gap-3 p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-purple-700 dark:hover:text-purple-500"
+        <div>
+          {{-- Botão Menu --}}
+          <button
+            type="button"
+            @click="sidebarOpen = !sidebarOpen"
+            class="p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-purple-700 dark:hover:text-purple-500 cursor-pointer "
           >
-            @svg('lucide:house', {
-              width: iconSize,
-              height: iconSize,
-              class: 'shrink-0',
-            })
-            <span x-show="sidebarOpen" class="truncate font-bold">Início</span>
-          </a>
-          <a
-            href="{{ route('users.index') }}"
-            class="flex items-center gap-3 p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-purple-700 dark:hover:text-purple-500"
-          >
-            @svg('lucide:users', {
-              width: iconSize,
-              height: iconSize,
-              class: 'shrink-0',
-            })
-            <span x-show="sidebarOpen" class="truncate font-bold">Usuários</span>
-          </a>
-          <a
-            href="/videos"
-            class="flex items-center gap-3 p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-purple-700 dark:hover:text-purple-500"
-          >
-            @svg('lucide:video', {
-              width: iconSize,
-              height: iconSize,
-              class: 'shrink-0',
-            })
-            <span x-show="sidebarOpen" class="truncate font-bold">Vídeos</span>
-          </a>
-        </nav>
+            @svg('lucide:menu', { width: iconSize, height: iconSize })
+          </button>
+          {{-- Navegação --}}
+          <nav class="flex flex-col gap-2">
+            {{-- Link Para Você --}}
+            <a
+              href="{{ route('home') }}"
+              class="flex items-center gap-3 p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-purple-700 dark:hover:text-purple-500"
+            >
+              @svg('lucide:house', {
+                width: iconSize,
+                height: iconSize,
+                class: 'shrink-0',
+              })
+              <span x-show="sidebarOpen" class="truncate font-bold">Para Você</span>
+            </a>
+            {{-- Link Explorar --}}
+            <a
+              href="{{ route('videos.index') }}"
+              class="flex items-center gap-3 p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-purple-700 dark:hover:text-purple-500"
+            >
+              @svg('lucide:compass', {
+                width: iconSize,
+                height: iconSize,
+                class: 'shrink-0',
+              })
+              <span x-show="sidebarOpen" class="truncate font-bold">Explorar</span>
+            </a>
+          </nav>
+        </div>
+        {{-- Navbar Business Object --}}
+        @if(auth.user?.role === 'admin')
+          <div class="flex flex-col gap-1">
+            <h3 x-text="sidebarOpen ? 'Business Object' : '(BO)'" class="font-bold"></h3>
+            <nav class="flex flex-col gap-2 border rounded-md">
+              {{-- Link Usuários --}}
+              <a
+                href="{{ route('users.index') }}"
+                class="flex items-center gap-3 p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-purple-700 dark:hover:text-purple-500"
+              >
+                @svg('lucide:users', {
+                  width: iconSize,
+                  height: iconSize,
+                  class: 'shrink-0',
+                })
+                <span x-show="sidebarOpen" class="truncate font-bold">Usuários</span>
+              </a>
+              {{-- Link Vídeos --}}
+              <a
+                href="{{ route('videos.index') }}"
+                class="flex items-center gap-3 p-2 rounded-lg hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-purple-700 dark:hover:text-purple-500"
+              >
+                @svg('lucide:video', {
+                  width: iconSize,
+                  height: iconSize,
+                  class: 'shrink-0',
+                })
+                <span x-show="sidebarOpen" class="truncate font-bold">Vídeos</span>
+              </a>
+            </nav>
+          </div>
+        @end
       </aside>
       <!--Conteúdo Principal da Página-->
-      <main class="flex-1 min-w-0 bg-paper">{{{ await $slots.main() }}}</main>
+      <main class="flex-1 min-w-0 bg-paper h-full">{{{ await $slots.main() }}}</main>
     </div>
     @include('partials/flash_alerts')
   </body>

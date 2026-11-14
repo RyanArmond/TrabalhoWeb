@@ -1,5 +1,38 @@
-@layouts.app({ title: 'Home' })
-  <div>
-    <h1>For You Page</h1>
+@layouts.app({ title: 'Para Você' })
+  <div
+    class="flex flex-col h-full w-full overflow-y-scroll snap-y snap-mandatory items-center"
+  >
+    @each(video in videos)
+      <div
+        class="h-full w-full snap-start snap-always shrink-0 flex justify-center items-center py-2"
+      >
+        <div
+          class="relative h-full aspect-[9/16] rounded-2xl overflow-hidden shadow-2xl flex items-center justify-center"
+        >
+          <video
+            src="{{ video.url }}"
+            controls
+            autoplay
+            loop
+            muted
+            class="w-full h-full object-cover"
+          ></video>
+          <div
+            class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 via-black/40 to-transparent text-white pointer-events-none"
+          >
+            <p class="font-bold text-base flex items-center">
+              <span class="pb-1">@</span>
+              <span>{{ video.user ? video.user.username : 'criador' }}</span>
+            </p>
+            <p class="text-sm text-zinc-200 mt-1 line-clamp-2">{{ video.title }}</p>
+          </div>
+        </div>
+      </div>
+    @else
+      <div class="flex flex-col items-center justify-center text-center p-8">
+        <p class="text-xl font-bold">Nenhum vídeo recomendado ainda</p>
+        <a href="{{ route('videos.create') }}" class="btn-purple mt-4">+ Enviar o Primeiro Vídeo</a>
+      </div>
+    @end
   </div>
 @end

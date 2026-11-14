@@ -1,6 +1,5 @@
 @layouts.auth()
-  <h1 class="auth__title">Create your account</h1>
-  <p class="auth__sub">Start building with the starter kit.</p>
+  <h1 class="auth__title">Crie sua conta</h1>
   @form({
     route: 'new_account.store',
     method: 'POST',
@@ -18,7 +17,7 @@
       @!input.control({
         type: 'email',
         autocomplete: 'email',
-        placeholder: 'you@example.com',
+        placeholder: 'nome@exemplo.com',
       })
       @!field.error()
     @end
@@ -36,7 +35,7 @@
       @!field.error()
     @end
     @field.root({ name: 'password' })
-      @!field.label({ text: 'Password' })
+      @!field.label({ text: 'Senha' })
       @!input.control({
         type: 'password',
         autocomplete: 'new-password',
@@ -45,7 +44,7 @@
       @!field.error()
     @end
     @field.root({ name: 'passwordConfirmation' })
-      @!field.label({ text: 'Confirm password' })
+      @!field.label({ text: 'Confirmar senha' })
       @!input.control({
         type: 'password',
         autocomplete: 'new-password',
@@ -54,33 +53,19 @@
       @!field.error()
     @end
     @!button({
-      text: 'Create account',
+      text: 'Criar conta',
       type: 'submit',
       block: true,
       style: 'margin-top: 4px;',
       'x-bind:disabled': 'submitting',
-      'x-text': "submitting ? 'One moment…' : 'Create account'",
+      'x-text': "submitting ? 'Um momento…' : 'Criar conta'",
     })
   @end
 
   <p class="auth__foot">
-    
-    
-    
-    
-    
-    
-    
-    Already have an account?
-
-
-
-
-
-
-
+    <span>Já tem uma conta?</span>
     @link({ route: 'session.create', class: 'il' })
-      Sign in
+      Entre
     @end
   </p>
 @end
