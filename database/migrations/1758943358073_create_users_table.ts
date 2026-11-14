@@ -6,7 +6,7 @@ export default class extends BaseSchema {
   async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-      
+
       table.string('username', 50).notNullable().unique()
       table.string('display_name', 50).nullable()
       table.date('birth_date').notNullable()
@@ -16,6 +16,9 @@ export default class extends BaseSchema {
       table.string('phone_number', 15).nullable().unique()
 
       table.string('password').notNullable()
+
+      // Business Object
+      table.string('role').notNullable().defaultTo('user')
 
       // Perfil social
       table.string('avatar_url').nullable()

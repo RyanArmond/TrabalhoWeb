@@ -1,7 +1,88 @@
-@layouts.app({ title: 'Home'})
-<div>
-    <h1>
-        For You Page
-    </h1>
-</div>
+@layouts.app({ title: 'Para Você' })
+  <div class="flex flex-col h-full w-full overflow-y-scroll snap-y snap-mandatory items-center scroll-smooth">
+    @each(video in videos)
+      <div class="h-full w-full snap-start snap-always shrink-0 flex justify-center items-center py-2 px-4">
+        <div class="relative max-h-full max-w-[820px] rounded-2xl overflow-hidden shadow-2xl flex items-center justify-center">
+          @if(video.url)
+            <video
+              src="{{ video.url }}"
+              controls
+              loop
+              playsinline
+              class="max-h-[calc(100vh-120px)] max-w-full block rounded-2xl"
+            >
+              Seu navegador não suporta este vídeo.
+            </video>
+          @else
+            <div class="w-80 h-96 flex flex-col items-center justify-center text-zinc-500 p-6 text-center border border-zinc-300 dark:border-zinc-700 rounded-2xl">
+              @svg('lucide:video-off', { width: 48, height: 48, class: 'mb-2 opacity-50' })
+              <p>Nenhuma mídia vinculada a este anúncio</p>
+            </div>
+          @end
+
+          <div class="absolute right-3 bottom-24 flex flex-col items-center gap-3 text-white z-20">
+            <a
+              href="{{ route('videos.show', { id: video.id }) }}"
+              title="Ver detalhes do produto"
+              class="p-3 bg-zinc-900/75 hover:bg-purple-700 rounded-full transition shadow-lg backdrop-blur-md flex flex-col items-center text-xs"
+            >
+              @svg('lucide:shopping-bag', { width: 20, height: 20 })
+              <span class="text-[10px] mt-1 font-semibold">Detalhes</span>
+            </a>
+
+            <a
+              href="{{ route('videos.create') }}"
+              title="Postar novo vídeo"
+              class="p-3 bg-zinc-900/75 hover:bg-purple-700 rounded-full transition shadow-lg backdrop-blur-md flex flex-col items-center text-xs"
+            >
+              @svg('lucide:plus', { width: 20, height: 20 })
+              <span class="text-[10px] mt-1 font-semibold">Postar</span>
+            </a>
+          </div>
+
+          <div class="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/85 via-black/45 to-transparent text-white z-10 pointer-events-none">
+            <div class="flex items-center gap-3 mb-1.5 pointer-events-auto">
+              @if(video.user && video.user.avatarUrl)
+                <img
+                  src="{{ video.user.avatarUrl }}"
+                  alt="Foto do Usuário"
+                  class="w-10 h-10 rounded-full object-cover border-2 border-purple-500 shadow-md shrink-0"
+                />
+              @else
+                <div class="w-10 h-10 rounded-full bg-purple-700 border-2 border-purple-400 flex items-center justify-center font-extrabold text-white text-sm uppercase shadow-md shrink-0">
+                  {{ video.user && video.user.username ? video.user.username.charAt(0) : 'U' }}
+                </div>
+              @end
+
+              <div class="min-w-0">
+                <h2 class="text-base font-extrabold leading-tight drop-shadow truncate max-w-md">
+                  {{ video.title }}
+                </h2>
+                @if(video.user && video.user.username)
+                  <p class="text-xs text-purple-300 font-semibold drop-shadow flex items-center">
+                    <span>@</span><span>{{ video.user.username }}</span>
+                  </p>
+                @end
+              </div>
+            </div>
+
+            @if(video.description)
+              <p class="text-xs text-zinc-200 line-clamp-2 leading-relaxed max-w-lg pl-1">
+                {{ video.description }}
+              </p>
+            @end
+          </div>
+        </div>
+      </div>
+    @else
+      <div class="flex flex-col items-center justify-center text-center p-8 my-auto">
+        <p class="text-xl font-bold mb-2">Nenhum vídeo recomendado ainda</p>
+        <p class="text-sm text-zinc-500 mb-4">Seja o primeiro a publicar um vídeo de produto!</p>
+        <a href="{{ route('videos.create') }}" class="btn-purple gap-2">
+          @svg('lucide:plus', { width: 18, height: 18 })
+          <span>Enviar o Primeiro Vídeo</span>
+        </a>
+      </div>
+    @end
+  </div>
 @end

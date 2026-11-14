@@ -4,9 +4,23 @@ import app from '@adonisjs/core/services/app'
 
 export default class VideoController {
 
+    async feed({ request, view }: HttpContext) {
+        const selectedId = Number(request.input('video'))
+        let videos = await Video.query().preload('user').orderBy('createdAt', 'desc')
+
+        if (selectedId) {
+            const selected = videos.find((v) => v.id === selectedId)
+            if (selected) {
+                videos = [selected, ...videos.filter((v) => v.id !== selectedId)]
+            }
+        }
+
+        return view.render('pages/home', { videos })
+    }
+
     async index({ request, view }: HttpContext) {
         const search = request.input('search')
-        const query = Video.query().preload('user')
+        const query = Video.query().preload('user').orderBy('createdAt', 'desc')
 
         if (search) {
             query.whereLike('title', `%${search}%`)
